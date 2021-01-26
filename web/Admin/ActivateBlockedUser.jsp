@@ -1,0 +1,207 @@
+
+<%@page import="Com.Member.Dao.MemberDao"%>
+<%@page import="java.util.List"%>
+<!DOCTYPE html>
+<html lang="en">
+
+    <!-- Mirrored from codervent.com/rocker/color-version/table-data-tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 18 Sep 2018 13:50:15 GMT -->
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        <%@include file="Title.jsp" %>
+        <!-- simplebar CSS-->
+        <!-- simplebar CSS-->
+        <%@include file="Title.jsp" %>
+        <%@include file="Css.jsp" %>
+        <script>
+            $('document').ready(function() {
+                $('#cancel').click(function() {
+                    location.reload();
+                });
+            });
+        </script>
+        <style>
+            td
+            {
+                font-size:13px;
+                padding-left:3px;
+
+            }
+            th
+            {
+                padding-top:5px;
+                padding-bottom:5px;
+                font-size:12px;
+            }
+            table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting {
+                padding-right: 0px;
+                opacity: 1px;
+            }
+            th.sorting_desc
+            {
+                padding-right: 0px;
+
+            }
+            td.sorting_asc
+        </style>
+        <style>
+            .hideclass{
+                display:none;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <!-- Start wrapper-->
+        <div id="wrapper">
+
+            <!--Start sidebar-wrapper-->
+            <%@include file="Sidebar.jsp" %>
+            <!--End sidebar-wrapper-->
+
+            <!--Start topbar header-->
+            <%@include file="Topbar.jsp" %>
+            <!--End topbar header-->
+
+            <div class="clearfix"></div>
+
+            <div class="content-wrapper">
+                <div class="container-fluid">
+
+
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                         
+                            <div class="card">
+                                   
+                                <div class="card-header d100"><i class="fa fa-table"></i> Blocked User
+
+
+                                </div>
+                                <div class="card-body">
+                                    <%      if (session.getAttribute("i") != null) {
+                                    int i = (Integer) session.getAttribute("i");
+                                    String msg = (String) session.getAttribute("msg");
+                                    if (i == 2) {
+
+                            %>
+
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <div class="alert-icon">
+                                    <i class="icon-info"></i>
+                                </div>
+                                <div class="alert-message">
+                                    <span><strong></strong><%=msg%></span>
+                                </div>
+                            </div>
+                            <%} else {%>
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <div class="alert-icon">
+                                    <i class="icon-info"></i>
+                                </div>
+                                <div class="alert-message">
+                                    <span><strong></strong><%=msg%></span>
+                                </div>
+                            </div>
+
+                            <%
+                                    }
+                                    session.removeAttribute("i");
+                                    session.removeAttribute("msg");
+                                }%>
+                                    <div id="LDiv">
+                                        <div class="table-responsive">
+                                            <table id="example" class="table table-bordered">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sr.No.</th>
+                                                        <th>User ID</th>
+                                                        <th>Name</th>
+                                                        <th>Mobile No</th>
+                                                        <th>Reg Date </th>
+                                                        <th>Activate</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <%
+                                                        int i = 0;
+                                                        List<MemberModel> mm = new MemberDao().getByBlock();
+                                                        for (MemberModel m : mm) {
+                                                            i++;
+                                                    %>
+                                                    <tr>
+                                                        <td><%=i%></td>
+                                                        <td><%=m.getUsername()%></td>
+                                                        <td><%=m.getName()%></td>
+                                                        <td><%=m.getMobNO() %></td>
+                                                        <td><%=m.getRDate()%></td>
+                                                        <td> <a href="../ActivateBlockedMember?id=<%=m.getId()%>" class="btn btn-gradient-bloody btn-sm text-white" >Activate</a> </td>
+
+                                                    </tr>
+
+                                                    <%
+                                                        }
+                                                    %>
+                                                </tbody>
+
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div><!-- End Row-->
+
+                </div>
+                <!-- End container-fluid-->
+
+            </div><!--End content-wrapper-->
+            <!--Start Back To Top Button-->
+            <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+            <!--End Back To Top Button-->
+
+            <!--Start footer-->
+            <%@include file="Footer.jsp" %>
+            <!--End footer-->
+
+        </div><!--End wrapper-->
+
+
+
+        <!-- Bootstrap core JavaScript-->
+
+
+        <%@include file="Script.jsp" %>
+
+        <script>
+            $(document).ready(function() {
+                //Default data table
+                $('#default-datatable').DataTable();
+
+
+                var table = $('#example').DataTable({
+                    lengthChange: false,
+                    buttons: ['copy', 'excel', 'pdf', 'print', 'colvis']
+                });
+
+                table.buttons().container()
+                        .appendTo('#example_wrapper .col-md-6:eq(0)');
+
+            });
+
+        </script>
+
+    </body>
+
+    <!-- Mirrored from codervent.com/rocker/color-version/table-data-tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 18 Sep 2018 13:53:17 GMT -->
+</html>
